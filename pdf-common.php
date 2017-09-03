@@ -23,10 +23,8 @@ class FPPDF_Common
 	 * Remove any form fields with pdf_hidden in the class name
 	 */
 	public static function get_form_fields($form_id)
-	{
-		global $frm_field;		
-		
-        $fields = $frm_field->getAll(array('fi.form_id' => $form_id), 'field_order');
+	{		
+        $fields = FrmField::getAll(array('fi.form_id' => $form_id), 'field_order');
 
         foreach($fields as $k => $f){
 			if(strpos($f->field_options['classes'], 'pdf_hidden') !== false)
@@ -187,12 +185,10 @@ class FPPDF_Common
 	
 	public static function do_mergetags($string, $form_id, $entry_id)
 	{		
-		global $frm_entry;
-		
 		/* strip {all_fields} merge tag from $string */
 		$string = str_replace('[default-message]', '', $string);
 		
-		$entry = $frm_entry->getOne($entry_id, true);
+		$entry = FrmEntry::getOne($entry_id, true);
         $shortcodes = FrmProDisplaysHelper::get_shortcodes($string, $form_id);
         return FrmProFieldsHelper::replace_shortcodes($string, $entry, $shortcodes);				
 	}

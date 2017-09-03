@@ -18,14 +18,14 @@ class FPPDF_Entry {
 			'type' => false /* either false or empty (two column table), block (divs), or array ($form_data array) */
         ), $atts));
         
-        global $frmpro_settings, $frm_entry;
+        global $frmpro_settings;
         
 		if(!$id)
 		{
 			return;
 		}
          
-        $entry = $frm_entry->getOne($id, true);
+        $entry = FrmEntry::getOne($id, true);
      	$post['item_meta'] = $entry->metas;
 
         if(!$entry) {
@@ -36,8 +36,7 @@ class FPPDF_Entry {
 		$id = $entry->id;  
         
         if(!$fields or !is_array($fields)){
-            global $frm_field;
-            $fields = $frm_field->getAll(array('fi.form_id' => $form_id), 'field_order');
+            $fields = FrmField::getAll(array('fi.form_id' => $form_id), 'field_order');
         }
         
         $content = ($type == 'return') ? array() : '';
@@ -425,12 +424,11 @@ class FPPDF_Entry {
     }
 	
     public static function email_value($value, $meta, $entry){
-        global $frm_field, $frm_entry;
         
         if($entry->id != $meta->item_id)
-            $entry = $frm_entry->getOne($meta->item_id);
+            $entry = FrmEntry::getOne($meta->item_id);
         
-        $field = $frm_field->getOne($meta->field_id);
+        $field = FrmField::getOne($meta->field_id);
         if(!$field)
             return $value;
             
