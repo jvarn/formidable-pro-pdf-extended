@@ -47,7 +47,7 @@
 					 */ 
 					 foreach($results[0] as $key => $string)
 					 {
-						$template = $download = $text = false; 
+						$template = $download = $text = $language = false; 
 						 
 						/*
 						 * Check if any attributes are avaliable
