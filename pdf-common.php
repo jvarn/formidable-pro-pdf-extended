@@ -190,7 +190,7 @@ class FPPDF_Common
 		
 		$entry = FrmEntry::getOne($entry_id, true);
         $shortcodes = FrmProDisplaysHelper::get_shortcodes($string, $form_id);
-        return FrmProFieldsHelper::replace_shortcodes($string, $entry, $shortcodes);				
+        return FrmProContent::replace_shortcodes($string, $entry, $shortcodes);				
 	}
 	
 	public static function view_data($form_data)
