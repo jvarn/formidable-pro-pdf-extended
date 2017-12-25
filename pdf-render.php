@@ -166,7 +166,8 @@ class FPPDFRender
 		 	$orientation = ($arguments['orientation'] == 'landscape') ? 'L' : 'P';			 			
 		 }
 		 
-		 $mpdf = new mPDF('', $paper_size, 0, '', 15, 15, 16, 16, 9, 9, $orientation);
+     $mpdf = new mPDF('', $paper_size, 0, '', 15, 15, 16, 16, 9, 9, $orientation);// mPDF < 7.0
+     // $mpdf = new \Mpdf\Mpdf([ 'format' => $paper_size, 'orientation' => $orientation ]);// mPDF 7
 		
 		/*
 		 * Display PDF is full-page mode which allows the entire PDF page to be viewed
@@ -187,8 +188,9 @@ class FPPDFRender
 			$mpdf->useSubstitutions = false;		
 		}	
 		else
-		{	 
-			$mpdf->SetAutoFont(AUTOFONT_ALL);
+		{
+      $mpdf->SetAutoFont(AUTOFONT_ALL);// mPDF < 6
+      // $mpdf->autoScriptToLang = true;// mPDF 6
 			$mpdf->useSubstitutions = true;
 		}
 		
