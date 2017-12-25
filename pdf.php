@@ -3,7 +3,7 @@
 /*
 Plugin Name: Formidable Pro PDF Extended
 Plugin URI: http://www.formidablepropdfextended.com
-Description: Formidable Pro PDF Extended allows you to save/view/download a PDF from the front- and back-end, and automate PDF creation on form submission. Our Business Plus package also allows you to overlay field onto an existing PDF.
+Description: Formidable Pro PDF Extended allows you to save/view/download a PDF from the front- and back-end, and automate PDF creation on form submission. NOTE: This plugin was abandoned by the original author.
 Version: 1.6.2
 Author: Blue Liquid Designs
 Author URI: http://www.blueliquiddesigns.com.au
@@ -100,9 +100,10 @@ class FPPDF_Core extends FPPDFGenerator
 		  } else if ( FPPDF_Common::is_wordpress_supported( FP_PDF_EXTENDED_WP_SUPPORTED_VERSION ) === false ) {
 			 add_action( 'after_plugin_row_' . FP_PDF_EXTENDED_PLUGIN_BASENAME, 'FPPDF_Core::add_wp_compatibility_error' );
 			 return;
-		  } else {
-			 add_action( 'after_plugin_row_' . FP_PDF_EXTENDED_PLUGIN_BASENAME, 'FPPDF_Core::add_documentation_byline' );
 		  }
+      //else {
+			// add_action( 'after_plugin_row_' . FP_PDF_EXTENDED_PLUGIN_BASENAME, 'FPPDF_Core::add_documentation_byline' );
+		  //}
 
 
 	   /*
@@ -208,10 +209,10 @@ class FPPDF_Core extends FPPDFGenerator
 	/*
 	 * Display note about documentation
 	 */
-	public static function add_documentation_byline()
-	{
-		 FPPDF_Common::display_documentation_details();
-	}
+	//public static function add_documentation_byline()
+	//{
+	//	 FPPDF_Common::display_documentation_details();
+	//}
 
 	/**
 	 * Check to see if Formidable Pro is actually installed

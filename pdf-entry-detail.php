@@ -48,7 +48,14 @@ class FPPDF_Entry {
 		
 		if($type == 'array')
 		{
-			$array['form_title'] 				= $entry->form_name;
+		    // was getting some undefined warnings
+		    if ( empty( $entry->form_name ) || empty( $entry->description ) ) {
+    		    $debug_entry = $entry;
+    		    unset($debug_entry->metas);
+    		    error_log("\$entry at line 51 pdf-entry-detail.php (look for form_name and description)\n" . var_export($debug_entry,true));
+		    }
+		    
+			$array['form_title'] 				= $entry->form_name;// undefined
 			$array['form_id']					= $entry->form_id;
 			$array['lead_id']					= $entry->id;
 			
@@ -62,7 +69,7 @@ class FPPDF_Entry {
 			$array['misc']['updated_by'] 		= $entry->updated_by;			
 			$array['misc']['user_id'] 			= $entry->user_id;
 			$array['misc']['post_id']			= $entry->post_id;						
-			$array['misc']['description'] 		= maybe_unserialize($entry->description);			
+			$array['misc']['description'] 		= maybe_unserialize($entry->description);// undefined			
 			$array['misc']['ip'] 				= $entry->ip;						
 			$array['misc']['parent_item_id'] 	= $entry->parent_item_id;						
 

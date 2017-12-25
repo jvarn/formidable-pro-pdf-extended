@@ -258,11 +258,11 @@ class FPPDF_Common
 		 FPPDF_Common::display_plugin_message($message, true);			
 	}	
 	
-	public static function display_documentation_details()
-	{
-		 $message = sprintf(__("Please review the %sFormidable Pro PDF Extended documentation%s for comprehensive installation instructions."), "<a href='http://formidablepropdfextended.com/documentation-v1/installation-and-configuration/'>", "</a>"); 
-		 FPPDF_Common::display_plugin_message($message);						
-	}	
+// 	public static function display_documentation_details()
+// 	{
+// 		 $message = sprintf(__("Please review the %sFormidable Pro PDF Extended documentation%s for comprehensive installation instructions."), "<a href='http://formidablepropdfextended.com/documentation-v1/installation-and-configuration/'>", "</a>"); 
+// 		 FPPDF_Common::display_plugin_message($message);						
+// 	}	
 	
 	public static function display_plugin_message($message, $is_error = false){
 
