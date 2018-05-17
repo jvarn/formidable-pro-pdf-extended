@@ -129,12 +129,16 @@ class FPPDFRender
 	 */
 	public function PDF_processing($html, $filename, $id, $output = 'view', $arguments)
 	{
+	    
+	    $version_7 = apply_filters( 'fp_pdf_use_mpdf_7', true );
+	    
 		/* 
+		 * mPDF < 7.0:
 		 * DOMPDF replaced with mPDF in v3.0.0 
 		 * Check which version of mpdf we are calling
 		 * Full, Lite or Tiny
 		 */
-		 if(!class_exists('mPDF'))
+		 if( ! $version_7 && !class_exists('mPDF'))
 		 {
 			 if(FP_PDF_ENABLE_MPDF_TINY === true)
 			 {
@@ -148,6 +152,12 @@ class FPPDFRender
 			 {	 		
 					include FP_PDF_PLUGIN_DIR .'/mPDF/mpdf.php';
 			 }
+		 }
+		 /*
+		 * mPDF 7+:
+		 */
+		 if( $version_7 && ! class_exists( '\Mpdf\Mpdf' ) ) {
+		    require_once FP_PDF_PLUGIN_DIR . '/vendor/autoload.php';
 		 }
 		
 		/* 
@@ -166,8 +176,35 @@ class FPPDFRender
 		 	$orientation = ($arguments['orientation'] == 'landscape') ? 'L' : 'P';			 			
 		 }
 		 
-     $mpdf = new mPDF('', $paper_size, 0, '', 15, 15, 16, 16, 9, 9, $orientation);// mPDF < 7.0
-     // $mpdf = new \Mpdf\Mpdf([ 'format' => $paper_size, 'orientation' => $orientation ]);// mPDF 7
+		if ( ! $version_7 )
+		{
+		    // mPDF < 7.0
+            $mpdf = new mPDF('', $paper_size, 0, '', 15, 15, 16, 16, 9, 9, $orientation);
+		}
+		else
+		{
+            // mPDF 7+
+            $config = [
+                'format' => $paper_size,
+                'orientation' => $orientation,
+                'percentSubset' => 60,
+                'useSubstitutions' => true,
+                'allow_output_buffering' => true,
+                'enableImports' => true,
+                'ignore_invalid_utf8' => true,
+                'setAutoTopMargin' => 'stretch',
+                'setAutoBottomMargin' => 'strech',
+                'keep_table_proportions' => true,
+                'use_kwt' => true,
+                'useKerning' => true,
+                'justifyB4br' => true,
+                'watermarkImgBehind' => true,
+                'showWatermarkText' => true,
+                'showWatermarkImage' => true,
+                // 'autoPadding' => true,// causing Undefined index: border_radius_TL_H and others in Tag.php
+                ];
+            $mpdf = new \Mpdf\Mpdf($config);
+		}
 		
 		/*
 		 * Display PDF is full-page mode which allows the entire PDF page to be viewed
@@ -189,8 +226,8 @@ class FPPDFRender
 		}	
 		else
 		{
-      $mpdf->SetAutoFont(AUTOFONT_ALL);// mPDF < 6
-      // $mpdf->autoScriptToLang = true;// mPDF 6
+            //$mpdf->SetAutoFont(AUTOFONT_ALL);// mPDF < 6
+            $mpdf->autoScriptToLang = true;// mPDF 6
 			$mpdf->useSubstitutions = true;
 		}
 		
@@ -198,7 +235,7 @@ class FPPDFRender
 		 * Set Creator Meta Data
 		 */
 		
-		$mpdf->SetCreator('Formidable Pro PDF Extended v'. FP_PDF_EXTENDED_VERSION.'. http://formidablepropdfextended.com');	
+		$mpdf->SetCreator('Formidable Pro PDF Extended v'. FP_PDF_EXTENDED_VERSION);	
 
 		/*
 		 * Set RTL languages at user request

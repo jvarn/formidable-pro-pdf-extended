@@ -26,12 +26,11 @@ class FPPDF_Entry {
 		}
          
         $entry = FrmEntry::getOne($id, true);
-     	$post['item_meta'] = $entry->metas;
-
-        if(!$entry) {
+        
+		if(!$entry) {
 			return;
 		}
-		
+     	$post['item_meta'] = $entry->metas;
 		$form_id = $entry->form_id;
 		$id = $entry->id;  
         
@@ -51,7 +50,7 @@ class FPPDF_Entry {
 		    // was getting some undefined warnings
 		    if ( empty( $entry->form_name ) || empty( $entry->description ) ) {
     		    $debug_entry = $entry;
-    		    unset($debug_entry->metas);
+    		    // unset($debug_entry->metas);
     		    error_log("\$entry at line 51 pdf-entry-detail.php (look for form_name and description)\n" . var_export($debug_entry,true));
 		    }
 		    
@@ -448,7 +447,7 @@ class FPPDF_Entry {
         
         switch($field->type){
             case 'user_id':
-                $value = FrmProFieldsHelper::get_display_name($value);
+                $value = FrmFieldsHelper::get_user_display_name($value);
                 break;
             case 'data':
                 if (is_array($value)){

@@ -1,11 +1,10 @@
 <?php
-
 /*
 Plugin Name: Formidable Pro PDF Extended
 Plugin URI: http://www.formidablepropdfextended.com
-Description: Formidable Pro PDF Extended allows you to save/view/download a PDF from the front- and back-end, and automate PDF creation on form submission. NOTE: This plugin was abandoned by the original author.
-Version: 1.6.2
-Author: Blue Liquid Designs
+Description: Formidable Pro PDF Extended allows you to save/view/download a PDF from the front- and back-end, and automate PDF creation on form submission.
+Version: 2.0.0
+Author: Blue Liquid Designs, Andrew J Klimek
 Author URI: http://www.blueliquiddesigns.com.au
 Text Domain: ffpdf
 
@@ -34,7 +33,7 @@ GNU General Public License for more details.
 	/*
 	* Define our constants
 	*/
-	if(!defined('FP_PDF_EXTENDED_VERSION')) { define('FP_PDF_EXTENDED_VERSION', '1.6.2'); }
+	if(!defined('FP_PDF_EXTENDED_VERSION')) { define('FP_PDF_EXTENDED_VERSION', '1.7.0'); }
 	if ( ! defined('FP_PDF_EXTENDED_SUPPORTED_VERSION') ) {
 		define( 'FP_PDF_EXTENDED_SUPPORTED_VERSION', '2.0' );
 	}
@@ -53,7 +52,7 @@ GNU General Public License for more details.
 	/*
 	* Do we need to deploy template files this edition? If yes set to true.
 	*/
-	if(!defined('FP_PDF_DEPLOY')) { define('FP_PDF_DEPLOY', true); }
+	if(!defined('FP_PDF_DEPLOY')) { define('FP_PDF_DEPLOY', false); }
 
 	/*
 	* Include the core files
@@ -224,11 +223,15 @@ class FPPDF_Core extends FPPDFGenerator
 		 */
 		if(get_option('fp_pdf_extended_version') != FP_PDF_EXTENDED_VERSION)
 		{
-			update_option('fp_pdf_extended_deploy', 'no');
 			update_option('fp_pdf_extended_version', FP_PDF_EXTENDED_VERSION);
-			/* redirect */
-			Header('Location: '.FP_PDF_SETTINGS_URL);
-			exit;
+			
+			if( FP_PDF_EXTENDED_VERSION < 1.7 )
+			{
+			    update_option('fp_pdf_extended_deploy', 'no');
+    			/* redirect */
+    			Header('Location: '.FP_PDF_SETTINGS_URL);
+    			exit;
+			}
 		}
 
 		/*

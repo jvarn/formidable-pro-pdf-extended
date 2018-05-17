@@ -3,7 +3,7 @@
  * DO NO REMOVE THESE STYLES.
  */
 body {
-font-family:DejaVu Sans, Helvetica, sans-serif;
+font-family: Arial, Helvetica, sans-serif;
 letter-spacing: -0.2px;
 font-size: 14px;
 }
@@ -46,6 +46,10 @@ table tr .center {
 	text-align: center;	
 }
 
+/* in mPDF 7, HTML attributes like <td width=300> are lowest priority.  
+ * Thus, the 2 rules below rules would over-ride such widths, 
+ * which I think are common, so I'm commenting these out to avoid breakage.
+ *
 table tr th {
  width: 30%;	
 }
@@ -53,6 +57,7 @@ table tr th {
 table tr td {
  width: 70%;	
 }
+*/
 
 .formidable-plus-table tr td {
  vertical-align: middle;	
@@ -107,7 +112,7 @@ width: 180px;
 }
 
 .typed_signature {
-font-family: journal, DejaVuSansMono, serif; 
+font-family: journal, serif; 
 font-size: 25px;	
 }
  
