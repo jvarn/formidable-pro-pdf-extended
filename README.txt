@@ -1,10 +1,10 @@
 === Plugin Name ===
-Contributors: blueliquiddesigns
-Donate link: http://www.formidablepropdfextended.com
+Contributors: blueliquiddesigns, andrewklimek
+Donate link:
 Tags: formidable, pro, pdf, extended, automation, attachment
 Requires at least: 3.9
-Tested up to: 3.9.1
-Stable tag: 1.5.4
+Tested up to: 4.9.5
+Stable tag: 2.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -41,20 +41,13 @@ Along with the above features, the PDF features include:
 * Watermarks
 * Password protection
 * UTF-8 encoded HTML
-* Better system resource handling
 
-**Server Requirements**
+**Requirements**
 
-1. PHP 5+
+1. PHP 5.3+
 2. MB String
 3. GD Library (optional)
 4. RAM:	Recommended: 128MB. Minimum: 64MB.
-
-**Software Requirements**
-
-1. [Purchase and install Formidable Pro](http://formidablepro.com/index.php?plugin=wafp&controller=links&action=redirect&l=formidable-pro&a=blue%20liquid%20designs)
-2. Wordpress 3.6+
-3. Formidable Pro 1.07.01+
 
 **Documentation and Support**
 
@@ -67,17 +60,17 @@ To view the Development Documentation head to [http://www.formidablepropdfextend
 3. Get the Form ID and follow the steps in [the configuration section](http://formidablepropdfextended.com/documentation-v1/installation-and-configuration/)
 4. Modify the PDF template file ([see the advanced templating section in the documentation](http://formidablepropdfextended.com/documentation-v1/templates/)) inside your active theme's FORMIDABLE_PDF_TEMPLATES/ folder.
 
-
-== Frequently Asked Questions ==
-
-All FAQs can be [viewed on the Formidable Pro PDF Extended website](http://formidablepropdfextended.com/faq/category/developers).  
-
 == Screenshots ==
 
 #1. View PDF from the Formidable Pro entries list.
 #2. View or download the PDF from a Formidable Pro entry.
 
 == Changelog ==
+
+= 2.0.0 =
+* Fixes for PHP 7 and Formidable 3
+* The underlying PDF engine (mPDF) has been upgraded from 5.7.1 (Sep 2013) to 7.0.3 (Jan 2018)
+* Still beta(!) but working in production for me.
 
 = 1.5.4 =
 * Fixed up initialisation over FTP/SSH
