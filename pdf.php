@@ -57,7 +57,6 @@ GNU General Public License for more details.
 	/*
 	* Include the core files
 	*/
-	include FP_PDF_PLUGIN_DIR . 'compatibility.php';
 	include FP_PDF_PLUGIN_DIR . 'pdf-common.php';
 	include FP_PDF_PLUGIN_DIR . 'pdf-configuration-indexer.php';
 	include FP_PDF_PLUGIN_DIR . 'installation-update-manager.php';

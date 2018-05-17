@@ -366,7 +366,7 @@ class FPPDF_InstallUpdater
 	public function fp_pdf_not_supported()
 	{
 			echo '<div class="fppdfe_message error"><p>';
-			echo 'Formidable Pro PDF Extended only works with Formidable Pro version '.FP_PDF_EXTENDED_SUPPORTED_VERSION.' and higher. Please <a href="http://formidablepro.com/index.php?plugin=wafp&controller=links&action=redirect&l=formidable-pro&a=blue liquid designs">upgrade your copy of Formidable Pro</a> to use this plugin.';
+			echo 'Formidable Pro PDF Extended only works with Formidable Pro version '.FP_PDF_EXTENDED_SUPPORTED_VERSION.' and higher. Please upgrade your copy of Formidable Pro to use this plugin.';
 			echo '</p></div>';	
 	}
 								

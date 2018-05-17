@@ -248,7 +248,7 @@ class FPPDF_Common
 	
 	public static function display_compatibility_error()
 	{
-		 $message = sprintf(__("Formidable Pro " . FP_PDF_EXTENDED_SUPPORTED_VERSION . " is required to use this plugin. Activate/Upgrade now or %spurchase it today!%s"), "<a href='http://formidablepro.com/index.php?plugin=wafp&controller=links&action=redirect&l=formidable-pro&a=blue%20liquid%20designs'>", "</a>"); 
+		 $message = "Formidable Pro " . FP_PDF_EXTENDED_SUPPORTED_VERSION . " is required to use this plugin. Activate/Upgrade now or purchase it today!"; 
 		 FPPDF_Common::display_plugin_message($message, true);			
 	}
 	
