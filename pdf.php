@@ -183,7 +183,7 @@ class FPPDF_Core extends FPPDFGenerator
 		  * Check if the user has switched themes and they haven't yet prompt user to copy over directory structure
 		  * If the plugin has just initialised we won't check for a theme swap as initialisation will reset this value
 		  */
-		  if(!rgpost('upgrade'))
+		  if(!filter_input(INPUT_POST,'upgrade'))
 		  {
 		  	FPPDF_InstallUpdater::check_theme_switch();
 		  }
@@ -239,7 +239,7 @@ class FPPDF_Core extends FPPDFGenerator
 		 */
 		$theme_switch = get_option('gfpdfe_switch_theme');
 
-		if( ( ( get_option('fp_pdf_extended_installed') != 'installed' ) || ( ! is_dir(FP_PDF_TEMPLATE_LOCATION)) ) && ( ! rgpost('upgrade') && ( empty( $theme_switch['old'] ) ) ) ) {
+		if( ( ( get_option('fp_pdf_extended_installed') != 'installed' ) || ( ! is_dir(FP_PDF_TEMPLATE_LOCATION)) ) && ( ! filter_input(INPUT_POST,'upgrade') && ( empty( $theme_switch['old'] ) ) ) ) {
 			/*
 			 * Prompt user to initialise plugin
 			 */
@@ -249,7 +249,7 @@ class FPPDF_Core extends FPPDFGenerator
 			/**
 			 * Check if deployed new template files after update
 			 */
-			 if( (get_option('FP_PDF_extended_deploy') == 'no' && !rgpost('upgrade') && FP_PDF_DEPLOY === true) || (file_exists(FP_PDF_PLUGIN_DIR .'mPDF.zip') && !rgpost('upgrade') ) ) {
+			 if( (get_option('FP_PDF_extended_deploy') == 'no' && !filter_input(INPUT_POST,'upgrade') && FP_PDF_DEPLOY === true) || (file_exists(FP_PDF_PLUGIN_DIR .'mPDF.zip') && !filter_input(INPUT_POST,'upgrade') ) ) {
 				/*show warning message */
 				add_action('admin_notices', array("FPPDF_InstallUpdater", "FP_PDF_not_deployed"));
 			 }
@@ -391,7 +391,7 @@ class FPPDF_Core extends FPPDFGenerator
 	  /*
 	   * If $_GET variable isn't set then stop function
 	   */
-	  if(rgempty('pdf', $_GET))
+	  if(empty($_GET['pdf']))
 	  {
 		return;
 	  }

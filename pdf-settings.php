@@ -15,7 +15,7 @@ class FPPDF_Settings {
 		/*
 		 * Initialise Formidable Settings Page
 		 */
-		if ( rgget('page') == 'formidable-settings' ) {
+		if ( filter_input(INPUT_GET,'page') == 'formidable-settings' ) {
 			/*
 			 * Add Formidable Settings Page
 			 */
@@ -37,9 +37,9 @@ class FPPDF_Settings {
 		 * Check if we need to redeploy default PDF templates/styles to the theme folder 
 		 */
 		 
-		if( FP_PDF_DEPLOY === true && rgpost('fp_pdf_deploy') && 
+		if( FP_PDF_DEPLOY === true && filter_input(INPUT_POST,'fp_pdf_deploy') && 
 		( wp_verify_nonce($_POST['fp_pdf_deploy_nonce'],'fp_pdf_deploy_nonce_action') || wp_verify_nonce($_GET['_wpnonce'],'pdf-extended-filesystem') ) ) {				
-			if(rgpost('upgrade'))
+			if(filter_input(INPUT_POST,'upgrade'))
 			{
 				/* 
 				 * Deploy new template styles 
@@ -51,11 +51,11 @@ class FPPDF_Settings {
 					return true;
 				}
 			}
-			elseif(rgpost('font-initialise'))
+			elseif(filter_input(INPUT_POST,'font-initialise'))
 			{
 
 			}
-			/*elseif(rgpost('cancel'))
+			/*elseif(filter_input(INPUT_POST,'cancel'))
 			{
 				update_option('gf_pdf_extended_deploy', 'yes');	
 			}*/

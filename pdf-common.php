@@ -6,8 +6,8 @@ class FPPDF_Common
 	{
 		global $form_id, $lead_id, $lead_ids;
 		
-		$form_id 		=  ($form_id) ? $form_id : absint( rgget("fid") );
-		$lead_ids 		=  ($lead_id) ? array($lead_id) : explode(',', rgget("lid"));
+		$form_id 		=  ($form_id) ? $form_id : absint( filter_input(INPUT_GET,"fid") );
+		$lead_ids 		=  ($lead_id) ? array($lead_id) : explode(',', filter_input(INPUT_GET,"lid"));
 		
 		/**
 		 * If form ID and lead ID hasn't been set stop the PDF from attempting to generate
@@ -58,7 +58,7 @@ class FPPDF_Common
 			return false;
 		}
 		
-		 if(get_option('fp_pdf_extended_deploy') == 'no' && !rgpost('upgrade') && FP_PDF_DEPLOY === true)		
+		 if(get_option('fp_pdf_extended_deploy') == 'no' && !filter_input(INPUT_POST,'upgrade') && FP_PDF_DEPLOY === true)		
 		 {
 			return false; 
 		 }

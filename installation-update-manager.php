@@ -320,9 +320,9 @@ class FPPDF_InstallUpdater
 	 */
 	public function fp_pdf_not_deployed()
 	{		
-		if( (FP_PDF_DEPLOY === true) && !rgpost('update') )
+		if( (FP_PDF_DEPLOY === true) && !filter_input(INPUT_POST,'update') )
 		{
-			if(rgget("page") == 'fp_settings' && rgget('addon') == 'PDF')
+			if(filter_input(INPUT_GET,"page") == 'fp_settings' && filter_input(INPUT_GET,'addon') == 'PDF')
 			{
 				echo '<div class="fppdfe_message error"><p>';
 				echo 'You\'ve updated Formidable Pro PDF Extended but are yet to re-initialise the plugin. After initialising, please review the latest updates to ensure your custom templates remain compatible with the latest version.';
@@ -342,9 +342,9 @@ class FPPDF_InstallUpdater
 	 * PDF Extended has been freshly installed
 	 */
 	public static function fp_pdf_not_deployed_fresh() {
-		if( (FP_PDF_DEPLOY === true) && !rgpost('update') )
+		if( (FP_PDF_DEPLOY === true) && !filter_input(INPUT_POST,'update') )
 		{
-			if(rgget("page") == 'fp_settings' && rgget('addon') == 'PDF')
+			if(filter_input(INPUT_GET,"page") == 'fp_settings' && filter_input(INPUT_GET,'addon') == 'PDF')
 			{
 				echo '<div class="fppdfe_message updated"><p>';
 				echo 'Welcome to Formidable Pro PDF Extended. Before you can use the plugin correctly you need to initilise it.';
