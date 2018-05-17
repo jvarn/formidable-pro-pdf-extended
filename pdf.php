@@ -778,6 +778,8 @@ class FPPDF_Core extends FPPDFGenerator
 				{
 					if(isset($fppdf->configuration[$i]['template']) && $fppdf->configuration[$i]['template'] == $template)
 					{
+						// error_log('$fppdf->index[$form_id] in pdf.php');
+						// error_log(var_export($fppdf->index[$form_id], true));
 						/* matched by template */
 						return $fppdf->index[$form_id][$i];	
 					}
@@ -789,46 +791,4 @@ class FPPDF_Core extends FPPDFGenerator
 		}
 		return $index;	
 	}		
-}
-
-/*
- * array_replace_recursive was added in PHP5.3
- * Add fallback support for those with a version lower than this
- * and Wordpress still supports PHP5.0 to PHP5.2
- */
-if (!function_exists('array_replace_recursive'))
-{
-	function array_replace_recursive()
-	{
-	    // Get array arguments
-	    $arrays = func_get_args();
-
-	    // Define the original array
-	    $original = array_shift($arrays);
-
-	    // Loop through arrays
-	    foreach ($arrays as $array)
-	    {
-	        // Loop through array key/value pairs
-	        foreach ($array as $key => $value)
-	        {
-	            // Value is an array
-	            if (is_array($value))
-	            {
-	                // Traverse the array; replace or add result to original array
-	                $original[$key] = array_replace_recursive($original[$key], $array[$key]);
-	            }
-
-	            // Value is not an array
-	            else
-	            {
-	                // Replace or add current value to original array
-	                $original[$key] = $value;
-	            }
-	        }
-	    }
-
-	    // Return the joined array
-	    return $original;
-	} 
 }
