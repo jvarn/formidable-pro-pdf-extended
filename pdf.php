@@ -1,11 +1,11 @@
 <?php
 /*
 Plugin Name: Formidable Pro PDF Extended
-Plugin URI: http://www.formidablepropdfextended.com
+Plugin URI: https://github.com/andrewklimek/formidable-pro-pdf-extended
 Description: Formidable Pro PDF Extended allows you to save/view/download a PDF from the front- and back-end, and automate PDF creation on form submission.
 Version: 2.0.0
 Author: Blue Liquid Designs, Andrew J Klimek
-Author URI: http://www.blueliquiddesigns.com.au
+Author URI: https://github.com/andrewklimek/formidable-pro-pdf-extended
 Text Domain: ffpdf
 
 ------------------------------------------------------------------------
@@ -21,61 +21,50 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 */
 
+
 /*
- * As PDFs can't be generated if notices are displaying turn off error reporting to the screen.
- * Production servers should already have this done.
+* Define our constants
+*/
+if(!defined('FP_PDF_EXTENDED_VERSION')) define('FP_PDF_EXTENDED_VERSION', '1.7.0');
+if(!defined('FP_PDF_EXTENDED_SUPPORTED_VERSION')) define('FP_PDF_EXTENDED_SUPPORTED_VERSION', '2.0' );
+if(!defined('FP_PDF_EXTENDED_WP_SUPPORTED_VERSION')) define('FP_PDF_EXTENDED_WP_SUPPORTED_VERSION', '3.6');
+if(!defined('FP_PDF_PLUGIN_DIR')) define('FP_PDF_PLUGIN_DIR', plugin_dir_path( __FILE__ ));
+if(!defined('FP_PDF_PLUGIN_URL')) define('FP_PDF_PLUGIN_URL', plugin_dir_url( __FILE__ ));
+if(!defined('FP_PDF_SETTINGS_URL')) define("FP_PDF_SETTINGS_URL", site_url() .'/wp-admin/admin.php?page=formidable-settings#PDF_settings');
+if(!defined('FP_PDF_SAVE_FOLDER')) define('FP_PDF_SAVE_FOLDER', 'FORMIDABLE_PDF_TEMPLATES');
+if(!defined('FP_PDF_SAVE_LOCATION')) define('FP_PDF_SAVE_LOCATION', get_stylesheet_directory().'/'.FP_PDF_SAVE_FOLDER.'/output/');
+if(!defined('FP_PDF_FONT_LOCATION')) define('FP_PDF_FONT_LOCATION', get_stylesheet_directory().'/'.FP_PDF_SAVE_FOLDER.'/fonts/');
+if(!defined('FP_PDF_TEMPLATE_LOCATION')) define('FP_PDF_TEMPLATE_LOCATION', get_stylesheet_directory().'/'.FP_PDF_SAVE_FOLDER.'/');
+if(!defined('FP_PDF_TEMPLATE_URL_LOCATION')) define('FP_PDF_TEMPLATE_URL_LOCATION', get_stylesheet_directory_uri().'/'. FP_PDF_SAVE_FOLDER .'/');
+if(!defined('FP_PDF_EXTENDED_PLUGIN_BASENAME')) define('FP_PDF_EXTENDED_PLUGIN_BASENAME', plugin_basename(__FILE__));
+
+/*
+* Do we need to deploy template files this edition? If yes set to true.
+*/
+if(!defined('FP_PDF_DEPLOY')) define('FP_PDF_DEPLOY', false);
+
+/*
+* Include the core files
+*/
+include FP_PDF_PLUGIN_DIR . 'pdf-common.php';
+include FP_PDF_PLUGIN_DIR . 'pdf-configuration-indexer.php';
+include FP_PDF_PLUGIN_DIR . 'installation-update-manager.php';
+include FP_PDF_PLUGIN_DIR . 'pdf-render.php';
+include FP_PDF_PLUGIN_DIR . 'pdf-settings.php';
+include FP_PDF_PLUGIN_DIR . 'pdf-entry-detail.php';
+include FP_PDF_PLUGIN_DIR . 'pdf-custom-display.php';
+
+/*
+* Initiate the class after Formidable Pro has been loaded using the init hook.
+*/
+add_action( 'init', 'FPPDF_Core::pdf_init' );
+add_action( 'admin_init', 'FPPDF_Core::admin_init' );
+
+/*
+ * Add settings page AJAX listeners
  */
- if(WP_DEBUG !== true)
- {
- 	error_reporting(0);
- }
-
-	/*
-	* Define our constants
-	*/
-	if(!defined('FP_PDF_EXTENDED_VERSION')) { define('FP_PDF_EXTENDED_VERSION', '1.7.0'); }
-	if ( ! defined('FP_PDF_EXTENDED_SUPPORTED_VERSION') ) {
-		define( 'FP_PDF_EXTENDED_SUPPORTED_VERSION', '2.0' );
-	}
-	if(!defined('FP_PDF_EXTENDED_WP_SUPPORTED_VERSION')) { define('FP_PDF_EXTENDED_WP_SUPPORTED_VERSION', '3.6'); }
-
-	if(!defined('FP_PDF_PLUGIN_DIR')) { define('FP_PDF_PLUGIN_DIR', plugin_dir_path( __FILE__ )); }
-	if(!defined('FP_PDF_PLUGIN_URL')) { define('FP_PDF_PLUGIN_URL', plugin_dir_url( __FILE__ )); }
-	if(!defined('FP_PDF_SETTINGS_URL')) { define("FP_PDF_SETTINGS_URL", site_url() .'/wp-admin/admin.php?page=formidable-settings#PDF_settings'); }
-	if(!defined('FP_PDF_SAVE_FOLDER')) { define('FP_PDF_SAVE_FOLDER', 'FORMIDABLE_PDF_TEMPLATES'); }
-	if(!defined('FP_PDF_SAVE_LOCATION')) { define('FP_PDF_SAVE_LOCATION', get_stylesheet_directory().'/'.FP_PDF_SAVE_FOLDER.'/output/'); }
-	if(!defined('FP_PDF_FONT_LOCATION')) { define('FP_PDF_FONT_LOCATION', get_stylesheet_directory().'/'.FP_PDF_SAVE_FOLDER.'/fonts/'); }
-	if(!defined('FP_PDF_TEMPLATE_LOCATION')) { define('FP_PDF_TEMPLATE_LOCATION', get_stylesheet_directory().'/'.FP_PDF_SAVE_FOLDER.'/'); }
-	if(!defined('FP_PDF_TEMPLATE_URL_LOCATION')) { define('FP_PDF_TEMPLATE_URL_LOCATION', get_stylesheet_directory_uri().'/'. FP_PDF_SAVE_FOLDER .'/'); }
-	if(!defined('FP_PDF_EXTENDED_PLUGIN_BASENAME')) { define('FP_PDF_EXTENDED_PLUGIN_BASENAME', plugin_basename(__FILE__)); }
-
-	/*
-	* Do we need to deploy template files this edition? If yes set to true.
-	*/
-	if(!defined('FP_PDF_DEPLOY')) { define('FP_PDF_DEPLOY', false); }
-
-	/*
-	* Include the core files
-	*/
-	include FP_PDF_PLUGIN_DIR . 'pdf-common.php';
-	include FP_PDF_PLUGIN_DIR . 'pdf-configuration-indexer.php';
-	include FP_PDF_PLUGIN_DIR . 'installation-update-manager.php';
-	include FP_PDF_PLUGIN_DIR . 'pdf-render.php';
-	include FP_PDF_PLUGIN_DIR . 'pdf-settings.php';
-	include FP_PDF_PLUGIN_DIR . 'pdf-entry-detail.php';
-	include FP_PDF_PLUGIN_DIR . 'pdf-custom-display.php';
-
-	/*
-	* Initiate the class after Formidable Pro has been loaded using the init hook.
-	*/
-	add_action( 'init', 'FPPDF_Core::pdf_init' );
-	add_action( 'admin_init', 'FPPDF_Core::admin_init' );
-
-	/*
-	 * Add settings page AJAX listeners
-	 */
-	add_action( 'wp_ajax_fppdfe_initialise', 'FPPDF_Settings::ajax_deploy' );
-	add_action( 'wp_ajax_fppdfe_initialise_font', 'FPPDF_Settings::initialise_fonts' );
+add_action( 'wp_ajax_fppdfe_initialise', 'FPPDF_Settings::ajax_deploy' );
+add_action( 'wp_ajax_fppdfe_initialise_font', 'FPPDF_Settings::initialise_fonts' );
 
 
 class FPPDF_Core extends FPPDFGenerator
@@ -93,10 +82,10 @@ class FPPDF_Core extends FPPDFGenerator
 		  * Include common functions for test
 		  */
 		  if ( FPPDF_Common::is_formidable_supported( FP_PDF_EXTENDED_SUPPORTED_VERSION ) === false ) {
-			 add_action( 'after_plugin_row_' . FP_PDF_EXTENDED_PLUGIN_BASENAME, 'FPPDF_Core::add_compatibility_error' );
+			 add_action( 'after_plugin_row_' . FP_PDF_EXTENDED_PLUGIN_BASENAME, 'FPPDF_Common::display_compatibility_error' );
 			 return;
 		  } else if ( FPPDF_Common::is_wordpress_supported( FP_PDF_EXTENDED_WP_SUPPORTED_VERSION ) === false ) {
-			 add_action( 'after_plugin_row_' . FP_PDF_EXTENDED_PLUGIN_BASENAME, 'FPPDF_Core::add_wp_compatibility_error' );
+			 add_action( 'after_plugin_row_' . FP_PDF_EXTENDED_PLUGIN_BASENAME, 'FPPDF_Common::display_wp_compatibility_error' );
 			 return;
 		  }
       //else {
@@ -187,30 +176,6 @@ class FPPDF_Core extends FPPDFGenerator
 		  	FPPDF_InstallUpdater::check_theme_switch();
 		  }
 	 }
-
-	/*
-	 * Display compatibility error about Formidable Pro on the plugins page
-	 */
-	public static function add_compatibility_error()
-	{
-		 FPPDF_Common::display_compatibility_error();
-	}
-
-	/*
-	 * Display compatibility error about Formidable Pro on the plugins page
-	 */
-	public static function add_wp_compatibility_error()
-	{
-		 FPPDF_Common::display_wp_compatibility_error();
-	}
-
-	/*
-	 * Display note about documentation
-	 */
-	//public static function add_documentation_byline()
-	//{
-	//	 FPPDF_Common::display_documentation_details();
-	//}
 
 	/**
 	 * Check to see if Formidable Pro is actually installed
@@ -382,15 +347,15 @@ class FPPDF_Core extends FPPDFGenerator
 
 	/*
 	 * Handle incoming routes
-	 * Look for $_GET['FP_PDF'] variable, authenticate user and generate/display PDF
+	 * Look for $_GET['pdf'] variable, authenticate user and generate/display PDF
 	 */
 	function process_exterior_pages() {
-	  global $wpdb, $frmdb;
+	  global $wpdb;
 
 	  /*
-	   * If $_GET variable isn't set then stop function
+	   * As far as I can tell, all 3 $_GET variables are needed to proceed, not just 'pdf
 	   */
-	  if(empty($_GET['pdf']))
+	  if ( empty($_GET['pdf']) || empty($_GET['fid']) || empty($_GET['lid']) )
 	  {
 		return;
 	  }
@@ -421,7 +386,7 @@ class FPPDF_Core extends FPPDFGenerator
 			 * Check the lead is in the database and the IP address matches (little security booster)
 			 */
 
-			 $form_entries = $wpdb->get_var( $wpdb->prepare("SELECT count(*) FROM `". $frmdb->entries ."` WHERE form_id = ".$form_id." AND id = ".$lead_id." AND ip = '".$ip."'", array() ) );
+			 $form_entries = $wpdb->get_var("SELECT count(*) FROM `{$wpdb->prefix}frm_items` WHERE form_id={$form_id} AND id={$lead_id} AND ip='{$ip}'");
 
 			 if($form_entries == 0 && $this->configuration[$index]['access'] !== 'all')
 			 {
@@ -457,7 +422,7 @@ class FPPDF_Core extends FPPDFGenerator
 				   * User doesn't have the correct access privilages
 				   * Let's check if they are assigned to the form
 				   */
-					$user_logged_entries = $wpdb->get_var( $wpdb->prepare("SELECT count(*) FROM `". $frmdb->entries ."` WHERE form_id = ".$form_id." AND id = ".$lead_id." AND user_id = '".get_current_user_id()."'", array() ) );
+					$user_logged_entries = $wpdb->get_var("SELECT count(*) FROM `{$wpdb->prefix}frm_items` WHERE form_id={$form_id} AND id={$lead_id} AND user_id=". get_current_user_id() );
 
 					/*
 					 * Failed again.
@@ -467,7 +432,7 @@ class FPPDF_Core extends FPPDFGenerator
 					if($user_logged_entries == 0)
 					{
 
-						$form_entries = $wpdb->get_var( $wpdb->prepare("SELECT count(*) FROM `". $frmdb->entries ."` WHERE form_id = ".$form_id." AND id = ".$lead_id." AND ip = '".$ip."'", array() ) );
+						$form_entries = $wpdb->get_var("SELECT count(*) FROM `{$wpdb->prefix}frm_items` WHERE form_id={$form_id} AND id={$lead_id} AND ip='{$ip}'");
 						if($form_entries == 0 && $this->configuration[$index]['access'] !== 'all')
 						{
 							/*
@@ -652,13 +617,13 @@ class FPPDF_Core extends FPPDFGenerator
 	private function generate_pdf_parameters($index, $form_id, $lead_id, $template = '')
 	{
 
-		$pdf_name        = (isset($this->configuration[$index]['filename']) && strlen($this->configuration[$index]['filename']) > 0) ? FPPDF_Common::validate_pdf_name($this->configuration[$index]['filename'], $form_id, $lead_id) : FPPDF_Common::get_pdf_filename($form_id, $lead_id);
-		$template        = (isset($template) && strlen($template) > 0) ? $template : $this->get_template($index);
+		$pdf_name        = !empty($this->configuration[$index]['filename']) ? FPPDF_Common::validate_pdf_name($this->configuration[$index]['filename'], $form_id, $lead_id) : FPPDF_Common::get_pdf_filename($form_id, $lead_id);
+		$template        = !empty($template) ? $template : $this->get_template($index);
 		
 		$pdf_size        = (isset($this->configuration[$index]['pdf_size']) && (is_array($this->configuration[$index]['pdf_size']) || strlen($this->configuration[$index]['pdf_size']) > 0)) ? $this->configuration[$index]['pdf_size'] : self::$default['pdf_size'];
-		$orientation     = (isset($this->configuration[$index]['orientation']) && strlen($this->configuration[$index]['orientation']) > 0) ? $this->configuration[$index]['orientation'] : self::$default['orientation'];
-		$security        = (isset($this->configuration[$index]['security']) && $this->configuration[$index]['security']) ? $this->configuration[$index]['security'] : self::$default['security'];
-		$premium         = (isset($this->configuration[$index]['premium']) && $this->configuration[$index]['premium'] === true) ? true: false;
+		$orientation     = !empty($this->configuration[$index]['orientation']) ? $this->configuration[$index]['orientation'] : self::$default['orientation'];
+		$security        = !empty($this->configuration[$index]['security']) ? $this->configuration[$index]['security'] : self::$default['security'];
+		$premium         = !empty($this->configuration[$index]['premium']) ? true: false;
 		
 		
 		/*
@@ -672,10 +637,10 @@ class FPPDF_Core extends FPPDFGenerator
 		$rtl             = (isset($this->configuration[$index]['rtl'])) ? $this->configuration[$index]['rtl'] : false;
 		
 		/* added in v3.4.0 */
-		$pdfa1b          = (isset($this->configuration[$index]['pdfa1b']) && $this->configuration[$index]['pdfa1b'] === true) ? true : false;		
+		$pdfa1b          = !empty($this->configuration[$index]['pdfa1b']) ? true : false;		
 		
 		/* added in v3.4.0 */
-		$pdfx1a          = (isset($this->configuration[$index]['pdfx1a']) && $this->configuration[$index]['pdfx1a'] === true) ? true : false;				
+		$pdfx1a          = !empty($this->configuration[$index]['pdfx1a']) ? true : false;				
 
 
 		/*
@@ -692,17 +657,15 @@ class FPPDF_Core extends FPPDFGenerator
 
 		$pdf_arguments = array(
 			'pdfname'             => $pdf_name,
-			'template'            =>  $template,
+			'template'            => $template,
 			'pdf_size'            => $pdf_size, /* set to one of the following, or array - in millimeters */
 			'orientation'         => $orientation, /* landscape or portrait */
-			
 			'security'            => $security, /* true or false. if true the security settings below will be applied. Default false. */
 			'pdf_password'        => $pdf_password, /* set a password to view the PDF */
 			'pdf_privileges'      => $privileges, /* assign user privliages to the PDF */
 			'pdf_master_password' => $master_password, /* set a master password to the PDF can't be modified without it */
 			'rtl'                 => $rtl,
 			'premium'             => $premium,
-			
 			'pdfa1b'              => $pdfa1b,			
 			'pdfx1a'              => $pdfx1a, 				
 		);
@@ -777,8 +740,8 @@ class FPPDF_Core extends FPPDFGenerator
 				{
 					if(isset($fppdf->configuration[$i]['template']) && $fppdf->configuration[$i]['template'] == $template)
 					{
-						// error_log('$fppdf->index[$form_id] in pdf.php');
-						// error_log(var_export($fppdf->index[$form_id], true));
+						error_log('$fppdf->index[$form_id] in pdf.php');
+						error_log(var_export($fppdf->index[$form_id], true));
 						/* matched by template */
 						return $fppdf->index[$form_id][$i];	
 					}

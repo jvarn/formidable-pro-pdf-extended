@@ -6,8 +6,8 @@ class FPPDF_Common
 	{
 		global $form_id, $lead_id, $lead_ids;
 		
-		$form_id 		=  ($form_id) ? $form_id : absint( filter_input(INPUT_GET,"fid") );
-		$lead_ids 		=  ($lead_id) ? array($lead_id) : explode(',', filter_input(INPUT_GET,"lid"));
+		$form_id = $form_id ? $form_id : absint( filter_input(INPUT_GET,"fid") );
+		$lead_ids = $lead_id ? array($lead_id) : explode(',', filter_input(INPUT_GET,"lid"));
 		
 		/**
 		 * If form ID and lead ID hasn't been set stop the PDF from attempting to generate
@@ -110,30 +110,6 @@ class FPPDF_Common
 	}
 	
 	/*
-	* Check if mPDF folder exists.
-	* If so, unzip and delete
-	* Helps reduce the package file size
-	*/		
-	public static function unpack_mPDF()
-	{
-		$file = FP_PDF_PLUGIN_DIR .'mPDF.zip';
-		$path = pathinfo(realpath($file), PATHINFO_DIRNAME);
-		
-		if(file_exists($file))
-		{
-			/* unzip folder and delete */
-			$zip = new ZipArchive;
-			$res = $zip->open($file);
-			
-			if ($res === TRUE) {
-  				$zip->extractTo($path);
-			    $zip->close();	
-				unlink($file);
-			}
-		}
-	}	
-	
-	/*
 	 * We need to validate the PDF name
 	 * Check the size limit, if the file name's syntax is correct 
 	 * and strip any characters that aren't classed as valid file name characters.
@@ -148,7 +124,7 @@ class FPPDF_Common
 		}
 		
 		/*
-		 * Limit the size of the filename to 100 characters
+		 * Limit the size of the filename to 150 characters
 		 */
 		 if(strlen($pdf_name) > 150)
 		 {
@@ -167,16 +143,7 @@ class FPPDF_Common
 		/*
 		 * Remove any invalid (mostly Windows) characters from filename
 		 */
-		 $pdf_name = str_replace('/', '-', $pdf_name);
-		 $pdf_name = str_replace('\\', '-', $pdf_name);		
-		 $pdf_name = str_replace('"', '-', $pdf_name);				 
-		 $pdf_name = str_replace('*', '-', $pdf_name);				 
-		 $pdf_name = str_replace('?', '-', $pdf_name);				 		 
-		 $pdf_name = str_replace('|', '-', $pdf_name);				 		 		 
-		 $pdf_name = str_replace(':', '-', $pdf_name);				 		 		 		 
-		 $pdf_name = str_replace('<', '-', $pdf_name);				 		 		 		 
-		 $pdf_name = str_replace('>', '-', $pdf_name);				 		 		 		 		 		 
-		 $pdf_name = str_replace('.', '_', $pdf_name);				 		 		 		 		 		 		 
+		 $pdf_name = str_replace( ['/', '\\', '"', '*', '?', '|', ':', '<', '>', '.'], '-', $pdf_name );				 		 		 		 		 		 		 
 		
 		 $pdf_name = $pdf_name . '.pdf';
 		
@@ -256,19 +223,13 @@ class FPPDF_Common
 	{
 		 $message = "Wordpress " . FP_PDF_EXTENDED_WP_SUPPORTED_VERSION . " or higher is required to use this plugin."; 
 		 FPPDF_Common::display_plugin_message($message, true);			
-	}	
-	
-// 	public static function display_documentation_details()
-// 	{
-// 		 $message = sprintf(__("Please review the %sFormidable Pro PDF Extended documentation%s for comprehensive installation instructions."), "<a href='http://formidablepropdfextended.com/documentation-v1/installation-and-configuration/'>", "</a>"); 
-// 		 FPPDF_Common::display_plugin_message($message);						
-// 	}	
+	}
 	
 	public static function display_plugin_message($message, $is_error = false){
 
-        $style = $is_error ? 'style="background-color: #ffebe8;"' : "";
+        $notice_type_class = $is_error ? ' notice-error' : ' notice-info';
 
-        echo '</tr><tr class="plugin-update-tr"><td colspan="5" class="plugin-update"><div class="update-message" ' . $style . '>' . $message . '</div></td>';
+        echo '</tr><tr class="plugin-update-tr"><td colspan=3 class="plugin-update"><div class="update-message notice inline notice-alt' . $notice_type_class . '">' . $message . '</div></td>';
     }
 	
 	/* 

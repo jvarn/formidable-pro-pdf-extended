@@ -17,9 +17,7 @@ class FPPDF_Entry {
 			'hidden' => false,
 			'type' => false /* either false or empty (two column table), block (divs), or array ($form_data array) */
         ), $atts));
-        
-        global $frmpro_settings;
-        
+                
 		if(!$id)
 		{
 			return;
@@ -47,13 +45,7 @@ class FPPDF_Entry {
 		
 		if($type == 'array')
 		{
-		    // was getting some undefined warnings
-		    if ( empty( $entry->form_name ) || empty( $entry->description ) ) {
-    		    $debug_entry = $entry;
-    		    // unset($debug_entry->metas);
-    		    error_log("\$entry at line 51 pdf-entry-detail.php (look for form_name and description)\n" . var_export($debug_entry,true));
-		    }
-		    
+
 			$array['form_title'] 				= $entry->form_name;// undefined
 			$array['form_id']					= $entry->form_id;
 			$array['lead_id']					= $entry->id;
