@@ -716,13 +716,13 @@ class FPPDF_Core extends FPPDFGenerator
 		else
 		{
 			/* if there are multiple indexes for a form we will look for the one with the matching template */
-			if(sizeof($fppdf->index[$form_id]) > 1 && strlen($template) > 0 )
+			if(sizeof($fppdf->index[$form_id]) > 1 && $template )
 			{
 
 				/*
 				 * Check if $_GET['aid'] present which will give us the index when multi templates assigned
 				 */
-				 if(isset($_GET['aid']) && (int) $_GET['aid'] > 0)
+				 if( !empty($_GET['aid']) )
 				 {
 					$aid = (int) $_GET['aid'] - 1;
 					if(isset($fppdf->index[$form_id][$aid]))
@@ -740,10 +740,8 @@ class FPPDF_Core extends FPPDFGenerator
 				{
 					if(isset($fppdf->configuration[$i]['template']) && $fppdf->configuration[$i]['template'] == $template)
 					{
-						error_log('$fppdf->index[$form_id] in pdf.php');
-						error_log(var_export($fppdf->index[$form_id], true));
 						/* matched by template */
-						return $fppdf->index[$form_id][$i];	
+						return $i;
 					}
 				}				
 			}
