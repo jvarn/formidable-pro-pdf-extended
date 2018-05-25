@@ -46,7 +46,7 @@ class FPPDF_Entry {
 		if($type == 'array')
 		{
 
-			$array['form_title'] 				= $entry->form_name;// undefined
+			$array['form_title'] 				= !empty( $entry->form_name ) ? $entry->form_name : '';// this seems to be undefined sometimes when FrmEntry::getOne pulls from cache... could fetch it somehow, but how often would it really be used in templates?
 			$array['form_id']					= $entry->form_id;
 			$array['lead_id']					= $entry->id;
 			
@@ -60,7 +60,7 @@ class FPPDF_Entry {
 			$array['misc']['updated_by'] 		= $entry->updated_by;			
 			$array['misc']['user_id'] 			= $entry->user_id;
 			$array['misc']['post_id']			= $entry->post_id;						
-			$array['misc']['description'] 		= maybe_unserialize($entry->description);// undefined			
+			$array['misc']['description'] 		= !empty( $entry->description ) ? maybe_unserialize($entry->description) : '';// this seems to be undefined sometimes when FrmEntry::getOne pulls from cache... could fetch it somehow, but how often would it really be used in templates?
 			$array['misc']['ip'] 				= $entry->ip;						
 			$array['misc']['parent_item_id'] 	= $entry->parent_item_id;						
 
