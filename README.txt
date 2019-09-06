@@ -4,7 +4,7 @@ Donate link:
 Tags: formidable, pro, pdf, extended, automation, attachment
 Requires at least: 3.9
 Tested up to: 4.9.5
-Stable tag: 2.0.0
+Stable tag: 2.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -66,6 +66,9 @@ To view the Development Documentation head to [http://www.formidablepropdfextend
 #2. View or download the PDF from a Formidable Pro entry.
 
 == Changelog ==
+
+= 2.0.1 =
+* Upgraded mPDF to 8.0.2
 
 = 2.0.0 =
 * Fixes for PHP 7 and Formidable 3

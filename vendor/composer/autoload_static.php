@@ -7,10 +7,14 @@ namespace Composer\Autoload;
 class ComposerStaticInit2dbca27bfe22ac3a18ba86515aeb0ef0
 {
     public static $files = array (
-        '5255c38a0faeba867671b61dfda6d864' => __DIR__ . '/..' . '/paragonie/random_compat/lib/random.php',
+        '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
     );
 
     public static $prefixLengthsPsr4 = array (
+        's' => 
+        array (
+            'setasign\\Fpdi\\' => 14,
+        ),
         'P' => 
         array (
             'Psr\\Log\\' => 8,
@@ -19,9 +23,17 @@ class ComposerStaticInit2dbca27bfe22ac3a18ba86515aeb0ef0
         array (
             'Mpdf\\' => 5,
         ),
+        'D' => 
+        array (
+            'DeepCopy\\' => 9,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
+        'setasign\\Fpdi\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/setasign/fpdi/src',
+        ),
         'Psr\\Log\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
@@ -30,18 +42,10 @@ class ComposerStaticInit2dbca27bfe22ac3a18ba86515aeb0ef0
         array (
             0 => __DIR__ . '/..' . '/mpdf/mpdf/src',
         ),
-    );
-
-    public static $classMap = array (
-        'FPDF' => __DIR__ . '/..' . '/setasign/fpdf/fpdf.php',
-        'FPDF_TPL' => __DIR__ . '/..' . '/setasign/fpdi/fpdf_tpl.php',
-        'FPDI' => __DIR__ . '/..' . '/setasign/fpdi/fpdi.php',
-        'FilterASCII85' => __DIR__ . '/..' . '/setasign/fpdi/filters/FilterASCII85.php',
-        'FilterASCIIHexDecode' => __DIR__ . '/..' . '/setasign/fpdi/filters/FilterASCIIHexDecode.php',
-        'FilterLZW' => __DIR__ . '/..' . '/setasign/fpdi/filters/FilterLZW.php',
-        'fpdi_bridge' => __DIR__ . '/..' . '/setasign/fpdi-fpdf/fpdi_bridge.php',
-        'fpdi_pdf_parser' => __DIR__ . '/..' . '/setasign/fpdi/fpdi_pdf_parser.php',
-        'pdf_context' => __DIR__ . '/..' . '/setasign/fpdi/pdf_context.php',
+        'DeepCopy\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy',
+        ),
     );
 
     public static function getInitializer(ClassLoader $loader)
@@ -49,7 +53,6 @@ class ComposerStaticInit2dbca27bfe22ac3a18ba86515aeb0ef0
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInit2dbca27bfe22ac3a18ba86515aeb0ef0::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInit2dbca27bfe22ac3a18ba86515aeb0ef0::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit2dbca27bfe22ac3a18ba86515aeb0ef0::$classMap;
 
         }, null, ClassLoader::class);
     }

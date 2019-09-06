@@ -5,6 +5,6 @@ Formidable Pro PDF Extended is a Wordpress plugin that allows you to save/view/d
 
 **This is an updated version of the original, abandoned project.**
 
-The underlying PDF engine (mPDF) has been upgraded from 5.7.1 (Sep 2013) to 7.0.3 (Jan 2018)
+The underlying PDF engine (mPDF) has been upgraded from 5.7.1 (Sep 2013) to 8.0.2 (Jul 2019)
 
 I am currently using this with PHP 7.2 and Formidable v3 with no problems, but I offer no promises.
