@@ -73,9 +73,13 @@
 							 /*
 							  * No template used. Get the first template file found in config
 							  */
-							 $all_indexes = $fppdf->check_configuration($form_id);		
-							 $index = $all_indexes[0];
-							 $template = $fppdf->get_template($form_id);									 
+							 $index = $fppdf->check_configuration($form_id);
+
+							if ( is_array( $index ) ) {
+								$index = $index[0];
+								error_log("it was an array this time!!!! pdf-custom-display.php line 81");
+							}
+							$template = $fppdf->get_template($form_id);									 
 						 }
 						 
 						 if($text === false)
