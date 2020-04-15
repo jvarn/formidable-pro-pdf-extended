@@ -3,7 +3,7 @@
 Plugin Name: Formidable Pro PDF Extended
 Plugin URI: https://github.com/andrewklimek/formidable-pro-pdf-extended
 Description: Formidable Pro PDF Extended allows you to save/view/download a PDF from the front- and back-end, and automate PDF creation on form submission.
-Version: 2.0.0
+Version: 2.0.1
 Author: Blue Liquid Designs, Andrew J Klimek
 Author URI: https://github.com/andrewklimek/formidable-pro-pdf-extended
 Text Domain: ffpdf
@@ -679,6 +679,7 @@ class FPPDF_Core extends FPPDFGenerator
 	 */
 	public static function check_configuration($form_id, $template = '')
 	{
+		// error_log("pdf.php 0");
 
 		global $fp_pdf_default_configuration, $fppdf;
 
@@ -687,13 +688,14 @@ class FPPDF_Core extends FPPDFGenerator
 		 */
 		if(empty($fppdf->index[$form_id]))
 		{
+// error_log("pdf.php 1");
 
 			/*
 			 * Check if a default configuration is defined
 			 */			
 			if(is_array($fp_pdf_default_configuration) && sizeof($fp_pdf_default_configuration) > 0 && FPPDF_SET_DEFAULT_TEMPLATE === true)
 			{
-
+// error_log("pdf.php 2");
 				/*
 				 * Add form_id to the defualt configuration				 
 				 */
@@ -715,10 +717,11 @@ class FPPDF_Core extends FPPDFGenerator
 		}
 		else
 		{
+// error_log("pdf.php 3");
 			/* if there are multiple indexes for a form we will look for the one with the matching template */
 			if(sizeof($fppdf->index[$form_id]) > 1 && $template )
 			{
-
+// error_log("pdf.php 4");
 				/*
 				 * Check if $_GET['aid'] present which will give us the index when multi templates assigned
 				 */
@@ -727,10 +730,11 @@ class FPPDF_Core extends FPPDFGenerator
 					$aid = (int) $_GET['aid'] - 1;
 					if(isset($fppdf->index[$form_id][$aid]))
 					{
+						// error_log("pdf.php 5");
 						return $fppdf->index[$form_id][$aid];
 					}					
 				 }				
-
+// error_log("pdf.php 6");
 				/*
 				 * If aid not present we'll match against the template
 				 * This is usually the case when using a user-generated link
@@ -740,12 +744,14 @@ class FPPDF_Core extends FPPDFGenerator
 				{
 					if(isset($fppdf->configuration[$i]['template']) && $fppdf->configuration[$i]['template'] == $template)
 					{
+						// error_log("pdf.php 7");
 						/* matched by template */
 						return $i;
 					}
 				}				
 			}
-			
+			// error_log("pdf.php 8");
+			// poo($fppdf->index[$form_id], '$fppdf->index[$form_id]');
 			/* there aren't multiples so just return first node */
 			return $fppdf->index[$form_id][0];	
 		}

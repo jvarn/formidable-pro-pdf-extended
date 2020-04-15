@@ -417,20 +417,47 @@ class FPPDF_InstallUpdater
 	public static function fp_pdf_on_switch_theme( $old_theme_name, $old_theme_object ) {
 		
 		/*
-		 * We will store the old pdf dir and new pdf directory and prompt the user to copy the PDF_EXTENDED_TEMPLATES folder
-		 */		
-		 	 $previous_theme_directory = $old_theme_object->get_stylesheet_directory();
-		 			 			
-			 $current_theme_array = wp_get_theme(); 
-			 $current_theme_directory = $current_theme_array->get_stylesheet_directory();
-
-			 /*
-			  * Add the save folder name to the end of the paths
-			  */ 
-			 $old_pdf_path = $previous_theme_directory . '/' . FP_PDF_SAVE_FOLDER;
-			 $new_pdf_path = $current_theme_directory . '/' . FP_PDF_SAVE_FOLDER;
+		 * Store the old pdf dir and new pdf directory and prompt the user to copy the PDF_EXTENDED_TEMPLATES folder
+		 */
 		 	
-			 update_option('fppdfe_switch_theme', array('old' => $old_pdf_path, 'new' => $new_pdf_path));
+		$current_theme_array = wp_get_theme(); 
+		$current_theme_directory = $current_theme_array->get_stylesheet_directory();
+
+		/*
+		 * Add the save folder name to the end of the paths
+		 */
+		
+		$new_pdf_path = $current_theme_directory . '/' . FP_PDF_SAVE_FOLDER;
+		
+		/*
+		 * Check for a previous theme switch that has not been deleted, ie the migration was never run
+		 */
+		$previous_switch = get_option('fppdfe_switch_theme');
+		if ( $previous_switch )
+		{
+			if ( $previous_switch['old'] === $new_pdf_path )
+			{
+				/*
+				 * They reverted back to the original theme that still has the PDF dir.
+				 * Delete the switch option so they aren't prompted to migrate.
+				 */
+				delete_option('fppdfe_switch_theme');
+				return;
+			}
+			else
+			{
+				// keep the original old theme in case they revert back to this theme.
+				$old_pdf_path = $previous_switch['old'];
+			} 
+		}
+		else
+		{
+			// This is the first theme switch since migration.  Save old dir.
+			$previous_theme_directory = $old_theme_object->get_stylesheet_directory();
+			$old_pdf_path = $previous_theme_directory . '/' . FP_PDF_SAVE_FOLDER;
+		}
+		
+		update_option('fppdfe_switch_theme', array('old' => $old_pdf_path, 'new' => $new_pdf_path));
 	}
 	
 	/*
