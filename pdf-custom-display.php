@@ -87,12 +87,12 @@
 							$text = 'View PDF'; 
 						 }
 						 
-						 $nonce = wp_create_nonce('fppdf_' . $form_id . $lead_id. $template);																 
+						 $nonce = wp_create_nonce('fppdf_' . $form_id . $lead_id. $template . $view_id);																 
 						 
 						 /*
 						  * Build URL 
 						  */
-						  $url = '<a href="'. site_url() . '/?pdf=1&fid='.$form_id.'&lid='.$lead_id.'&template='.$template .'&nonce='. $nonce ;
+						  $url = '<a href="'. site_url() . '/?pdf=1&fid='.$form_id.'&lid='.$lead_id.'&template='.$template . '&vid='.$view_id .'&nonce='. $nonce;
 						  $url .= ($download !== false) ? '&download=1' : '';
 						  $url .= ($language !== false) ? '&lang=' . $language : '';
 						  $url .= '">'. $text . '</a>';

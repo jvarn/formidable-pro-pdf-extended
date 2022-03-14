@@ -4,10 +4,11 @@ class FPPDF_Common
 {
 	public static function setup_ids()
 	{
-		global $form_id, $lead_id, $lead_ids;
+		global $form_id, $lead_id, $lead_ids, $view_id;
 		
 		$form_id = $form_id ? $form_id : absint( filter_input(INPUT_GET,"fid") );
 		$lead_ids = $lead_id ? array($lead_id) : explode(',', filter_input(INPUT_GET,"lid"));
+		$view_id = $view_id ? $view_id : absint( filter_input(INPUT_GET,"vid") );
 		
 		/**
 		 * If form ID and lead ID hasn't been set stop the PDF from attempting to generate
@@ -90,7 +91,7 @@ class FPPDF_Common
 	
 	public static function get_html_template($filename) 
 	{
-	  global $form_id, $lead_id, $lead_ids;
+	  global $form_id, $lead_id, $lead_ids, $view_id;
 
 	  ob_start();
 	  require($filename);	

@@ -41,7 +41,7 @@ if(!defined('FP_PDF_EXTENDED_PLUGIN_BASENAME')) define('FP_PDF_EXTENDED_PLUGIN_B
 /*
 * Do we need to deploy template files this edition? If yes set to true.
 */
-if(!defined('FP_PDF_DEPLOY')) define('FP_PDF_DEPLOY', false);
+if(!defined('FP_PDF_DEPLOY')) define('FP_PDF_DEPLOY', true);
 
 /*
 * Include the core files
@@ -261,7 +261,7 @@ class FPPDF_Core extends FPPDFGenerator
                             <div class="detailed_pdf">
 								<span><?php
 									echo $name;
-									$url = home_url() .'/?pdf=1&aid='. $aid .'&fid=' . $form_id . '&lid=' . $lead_id . '&template=' . $val['template'];
+									$url = home_url() .'/?pdf=1&aid='. $aid .'&fid=' . $form_id . '&lid=' . $lead_id . '&vid=' . $view_id . '&template=' . $val['template'];
 								?></span>
                                 <a href="<?php echo $url; ?>" target="_blank" class="button">View</a>
 				 				<a href="<?php echo $url.'&download=1'; ?>" target="_blank" class="button">Download</a></div>
@@ -273,7 +273,7 @@ class FPPDF_Core extends FPPDFGenerator
 		}
 		elseif($templates !== false)
 		{
-			$url = home_url() .'/?pdf=1&fid=' . $form_id . '&lid=' . $lead_id . '&template=' . $templates;
+			$url = home_url() .'/?pdf=1&fid=' . $form_id . '&lid=' . $lead_id . '&vid=' . $view_id . '&template=' . $templates;
 
 			?>
 			PDF: <a href="<?php echo $url; ?>" target="_blank" class="button">View</a>
@@ -319,7 +319,7 @@ class FPPDF_Core extends FPPDFGenerator
 							 $aid = (int) $id + 1;
 							?>
                             <li class="">
-                            	<a target="_blank" href="<?php echo home_url(); ?>/?pdf=1&aid=<?php echo $aid; ?>&fid=<?php echo $form_id; ?>&lid=<?php echo $lead_id; ?>&template=<?php echo $t['template']; ?>"><?php echo $name; ?></a>
+                            	<a target="_blank" href="<?php echo home_url(); ?>/?pdf=1&aid=<?php echo $aid; ?>&fid=<?php echo $form_id; ?>&lid=<?php echo $lead_id; ?>&vid=<?php echo $view_id; ?>&template=<?php echo $t['template']; ?>"><?php echo $name; ?></a>
                             </li>
                             <?php endforeach; ?>
                         </ul>
@@ -336,7 +336,7 @@ class FPPDF_Core extends FPPDFGenerator
 
 			ob_start();
 			?>
-			<a target="_blank" href="<?php echo home_url(); ?>/?pdf=1&fid=<?php echo $form_id; ?>&lid=<?php echo $lead_id; ?>&template=<?php echo $templates; ?>"> View PDF</a>
+			<a target="_blank" href="<?php echo home_url(); ?>/?pdf=1&fid=<?php echo $form_id; ?>&lid=<?php echo $lead_id; ?>&vid=<?php echo $view_id; ?>&template=<?php echo $templates; ?>"> View PDF</a>
 			<?php
 			$actions['pdf'] = ob_get_contents();
 			ob_end_clean();
@@ -362,6 +362,7 @@ class FPPDF_Core extends FPPDFGenerator
 
 		$form_id = (int) $_GET['fid'];
 		$lead_id = (int) $_GET['lid'];
+		$view_id = (int) $_GET['vid'];
 		$ip = FPPDF_Common::getRealIpAddr();
 
 		/*
@@ -403,8 +404,15 @@ class FPPDF_Core extends FPPDFGenerator
 			 $user_template = $_GET['template'];
 
 			 $nonce = $_GET['nonce'];
-
-			 if ( ! wp_verify_nonce( $nonce,  'fppdf_' . $form_id . $lead_id. $user_template ) ) {
+			 
+			 if ( isset( $_GET['vid'] ) ) {
+				 if ( ! wp_verify_nonce( $nonce,  'fppdf_' . $form_id . $lead_id. $user_template . $view_id ) ) {
+					 /*
+					  * Failed
+					  */
+					  exit('Access to PDF Denied');
+				 }
+			 } else  if ( ! wp_verify_nonce( $nonce,  'fppdf_' . $form_id . $lead_id. $user_template ) ) {
 				 /*
 				  * Failed
 				  */
